@@ -1,8 +1,14 @@
 import * as express from 'express';
+import * as path from 'path';
+import { Server } from 'ws';
 
-
+/* 使用express框架 */
 const app = express();
 
+/* 静态资源路径配置 */
+app.use('/', express.static(path.join(__dirname, '..', 'client')));
+
+/* WebSocket请求处理 */
 app.get('/api/stock', (request, response) => {
     let result = stocks;
     let params = request.query;
@@ -21,6 +27,28 @@ const server = app.listen(8000, 'localhost', () => {
 });
 
 
+/* 消息数订阅 */
+let subscriptions = new Set<any>();
+
+const wsServer = new Server({port: 8085});
+wsServer.on("connection", webSocket => {
+    subscriptions.add(webSocket);
+});
+
+let messageCount = 0;
+
+setInterval(() => {
+    subscriptions.forEach(ws => {
+        if (ws.readyState === 1) {
+            ws.send(JSON.stringify({messageCount: ++messageCount}));
+        } else {
+           subscriptions.delete(ws);
+        }
+    })
+}, 3000);
+
+
+/* 数据模型 */
 export class Stock {
     constructor (
         public id: number,

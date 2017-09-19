@@ -1,7 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
+var path = require("path");
+var ws_1 = require("ws");
+/* 使用express框架 */
 var app = express();
+/* 静态资源路径配置 */
+app.use('/', express.static(path.join(__dirname, '..', 'client')));
+/* WebSocket请求处理 */
 app.get('/api/stock', function (request, response) {
     var result = stocks;
     var params = request.query;
@@ -16,6 +22,24 @@ app.get('/api/stock/:id', function (request, response) {
 var server = app.listen(8000, 'localhost', function () {
     console.log('服务器已启动，地址是http://localhost:8000');
 });
+/* 消息数订阅 */
+var subscriptions = new Set();
+var wsServer = new ws_1.Server({ port: 8085 });
+wsServer.on("connection", function (webSocket) {
+    subscriptions.add(webSocket);
+});
+var messageCount = 0;
+setInterval(function () {
+    subscriptions.forEach(function (ws) {
+        if (ws.readyState === 1) {
+            ws.send(JSON.stringify({ messageCount: ++messageCount }));
+        }
+        else {
+            subscriptions.delete(ws);
+        }
+    });
+}, 3000);
+/* 数据模型 */
 var Stock = (function () {
     function Stock(id, name, price, rating, description, categories) {
         this.id = id;
