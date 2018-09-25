@@ -3,11 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var path = require("path");
 var ws_1 = require("ws");
-/* 使用express框架 */
 var app = express();
 /* 静态资源路径配置 */
 app.use('/', express.static(path.join(__dirname, '..', 'client')));
-/* WebSocket请求处理 */
 app.get('/api/stock', function (request, response) {
     var result = stocks;
     var params = request.query;
