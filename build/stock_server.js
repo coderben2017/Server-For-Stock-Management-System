@@ -40,7 +40,7 @@ setInterval(function () {
     });
 }, 3000);
 /* 数据模型 */
-var Stock = (function () {
+var Stock = /** @class */ (function () {
     function Stock(id, name, price, rating, description, categories) {
         this.id = id;
         this.name = name;

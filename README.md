@@ -9,10 +9,10 @@
    `git clone https://github.com/coderben2017/Server-For-Stock-Management-System.git`
 
 3. Build the project
-   `node build/stock_server.js`
+   `npm run start`
 
 4. Open your broswer
    - http://localhost:8000
 
 ### Update Time
-- 2017/09/19 11:07
+- 2018/09/25 20:43
