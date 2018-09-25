@@ -9,10 +9,13 @@
    `git clone https://github.com/coderben2017/Server-For-Stock-Management-System.git`
 
 3. Build the project
-   `npm run start`
+   `tsc`
 
-4. Open your broswer
+4. Run the project
+    `npm run start`
+
+5. Open your broswer
    - http://localhost:8000
 
 ### Update Time
-- 2018/09/25 20:43
+- 2018/09/25 21:00
